@@ -6,41 +6,23 @@ import { toast } from 'sonner'
 
 export default function Login() {
   const [email, setEmail] = useState('')
-  const [code, setCode] = useState('')
-  const [step, setStep] = useState('email') // 'email' | 'code'
   const [loading, setLoading] = useState(false)
+  const [sent, setSent] = useState(false)
 
-  const handleSendCode = async (e) => {
+  const handleMagicLink = async (e) => {
     e.preventDefault()
     if (!email) return
     setLoading(true)
     const { error } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { shouldCreateUser: true },
+      options: { emailRedirectTo: window.location.origin },
     })
     setLoading(false)
     if (error) {
       toast.error(error.message)
     } else {
-      setStep('code')
-      toast.success('Code sent — check your email')
+      setSent(true)
     }
-  }
-
-  const handleVerifyCode = async (e) => {
-    e.preventDefault()
-    if (!code) return
-    setLoading(true)
-    const { error } = await supabase.auth.verifyOtp({
-      email: email.trim(),
-      token: code.trim(),
-      type: 'email',
-    })
-    setLoading(false)
-    if (error) {
-      toast.error('Invalid or expired code — try again')
-    }
-    // on success, onAuthStateChange in AuthContext fires and routes to the app
   }
 
   const handleGoogle = async () => {
@@ -53,7 +35,6 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
-
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <svg version="1.1" viewBox="0 0 1988 791" height="44" style={{ width: 'auto' }} xmlns="http://www.w3.org/2000/svg">
@@ -64,9 +45,23 @@ export default function Login() {
         <h1 className="text-2xl font-bold text-foreground text-center mb-1">Talli</h1>
         <p className="text-sm text-muted-foreground text-center mb-8">Per Diem Tracker</p>
 
-        {step === 'email' ? (
+        {sent ? (
+          <div className="rounded-2xl bg-primary/10 border border-primary/20 p-6 text-center">
+            <p className="text-sm font-semibold text-primary mb-1">Check your email</p>
+            <p className="text-xs text-muted-foreground">
+              We sent a sign-in link to{' '}
+              <span className="font-medium text-foreground">{email}</span>.
+              Tap it to open the app.
+            </p>
+            <button
+              className="mt-4 text-xs text-muted-foreground underline"
+              onClick={() => setSent(false)}
+            >
+              Use a different email
+            </button>
+          </div>
+        ) : (
           <div className="space-y-4">
-            {/* Google OAuth */}
             <Button
               type="button"
               variant="outline"
@@ -88,8 +83,7 @@ export default function Login() {
               <div className="flex-1 h-px bg-border" />
             </div>
 
-            {/* Email step */}
-            <form onSubmit={handleSendCode} className="space-y-3">
+            <form onSubmit={handleMagicLink} className="space-y-3">
               <Input
                 type="email"
                 placeholder="you@example.com"
@@ -103,51 +97,13 @@ export default function Login() {
                 disabled={loading || !email}
                 className="w-full h-12 rounded-xl font-semibold"
               >
-                {loading ? 'Sending…' : 'Send 6-digit code'}
+                {loading ? 'Sending…' : 'Send sign-in link'}
               </Button>
             </form>
 
             <p className="text-center text-xs text-muted-foreground">
-              We'll email you a code — no password needed.
+              No password needed — we'll email you a one-tap link.
             </p>
-          </div>
-        ) : (
-          /* Code verification step */
-          <div className="space-y-4">
-            <div className="rounded-2xl bg-primary/10 border border-primary/20 p-4 text-center">
-              <p className="text-sm font-semibold text-primary mb-0.5">Check your email</p>
-              <p className="text-xs text-muted-foreground">
-                Enter the 6-digit code sent to <span className="font-medium text-foreground">{email}</span>
-              </p>
-            </div>
-
-            <form onSubmit={handleVerifyCode} className="space-y-3">
-              <Input
-                type="text"
-                inputMode="numeric"
-                placeholder="123456"
-                value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                className="h-14 rounded-xl bg-muted border-0 text-center text-2xl font-bold tracking-widest"
-                autoFocus
-                maxLength={6}
-                required
-              />
-              <Button
-                type="submit"
-                disabled={loading || code.length < 6}
-                className="w-full h-12 rounded-xl font-semibold"
-              >
-                {loading ? 'Verifying…' : 'Sign in'}
-              </Button>
-            </form>
-
-            <button
-              className="w-full text-xs text-muted-foreground underline"
-              onClick={() => { setStep('email'); setCode('') }}
-            >
-              Use a different email
-            </button>
           </div>
         )}
       </div>
