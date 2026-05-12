@@ -3,12 +3,7 @@ import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-
-const Logo = () => (
-  <svg version="1.1" viewBox="0 0 1988 791" height="44" style={{ width: 'auto' }} xmlns="http://www.w3.org/2000/svg">
-    <path fill="#77C63E" d="M1621.351074,265.402985 C1601.311401,277.257141 1581.208618,277.886932 1562.143921,265.116058 C1543.174805,252.409164 1535.406738,233.766068 1538.866089,211.017044 C1542.682617,185.919266 1565.158447,166.801773 1590.911621,166.320068 C1616.870117,165.834534 1640.453857,184.285583 1644.993042,209.280472 C1649.258423,232.768234 1641.072021,251.418396 1621.351074,265.402985z"/>
-  </svg>
-)
+import TalliLogo from '@/components/talli/TalliLogo'
 
 const GoogleButton = ({ onClick }) => (
   <Button type="button" variant="outline" className="w-full h-12 rounded-xl font-semibold gap-3" onClick={onClick}>
@@ -93,7 +88,7 @@ export default function Login() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="w-full max-w-sm">
-          <div className="flex justify-center mb-8"><Logo /></div>
+          <div className="flex justify-center mb-8"><TalliLogo height={44} /></div>
           <h1 className="text-2xl font-bold text-foreground text-center mb-1">Reset Password</h1>
           <p className="text-sm text-muted-foreground text-center mb-8">We'll email you a link to set a new password</p>
           {resetSent ? (
@@ -125,7 +120,7 @@ export default function Login() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="w-full max-w-sm text-center">
-          <div className="flex justify-center mb-8"><Logo /></div>
+          <div className="flex justify-center mb-8"><TalliLogo height={44} /></div>
           <div className="rounded-2xl bg-primary/10 border border-primary/20 p-8">
             <p className="text-lg font-bold text-primary mb-2">Check your email</p>
             <p className="text-sm text-muted-foreground">
@@ -144,7 +139,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
-        <div className="flex justify-center mb-8"><Logo /></div>
+        <div className="flex justify-center mb-8"><TalliLogo height={44} /></div>
         <h1 className="text-2xl font-bold text-foreground text-center mb-1">Talli</h1>
         <p className="text-sm text-muted-foreground text-center mb-8">Per Diem Tracker</p>
 
