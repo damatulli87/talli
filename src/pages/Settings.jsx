@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Download, ChevronRight, Check, Trash2 } from "lucide-react";
+import { Download, ChevronRight, Check, Trash2, LogOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -12,12 +12,14 @@ import Header from "@/components/talli/Header";
 import DeleteAccountSheet from "@/components/talli/DeleteAccountSheet";
 import PullToRefresh from "@/components/talli/PullToRefresh";
 import { SCHEDULE_PRESETS, getDayName, defaultConfig } from "@/lib/cycleUtils";
+import { useAuth } from "@/lib/AuthContext";
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export default function Settings() {
   const queryClient = useQueryClient();
   const contentRef = useRef(null);
+  const { logout } = useAuth();
 
   const { data: configs = [] } = useQuery({
     queryKey: ["cycle-configs"],
@@ -305,6 +307,20 @@ export default function Settings() {
             <Button variant="outline" onClick={handleExport} className="h-12 w-full rounded-xl font-semibold">
               <Download className="h-4 w-4 mr-2" />
               Export to CSV
+            </Button>
+          </div>
+
+          {/* Sign Out */}
+          <div className="rounded-2xl bg-card border border-border p-5">
+            <h3 className="text-sm font-semibold text-foreground mb-1">Account</h3>
+            <p className="text-xs text-muted-foreground mb-4">Sign out of your account on this device</p>
+            <Button
+              variant="outline"
+              onClick={logout}
+              className="h-12 w-full rounded-xl font-semibold"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign Out
             </Button>
           </div>
 
