@@ -3,7 +3,12 @@ import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-import TalliLogo from '@/components/talli/TalliLogo'
+const TLogo = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="64" height="64">
+    <circle cx="50" cy="50" r="50" fill="#77C63E"/>
+    <text x="50" y="68" fontFamily="system-ui,sans-serif" fontSize="52" fontWeight="bold" fill="white" textAnchor="middle">T</text>
+  </svg>
+)
 
 const GoogleButton = ({ onClick }) => (
   <Button type="button" variant="outline" className="w-full h-12 rounded-xl font-semibold gap-3" onClick={onClick}>
@@ -88,7 +93,7 @@ export default function Login() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="w-full max-w-sm">
-          <div className="flex justify-center mb-8"><TalliLogo height={44} /></div>
+          <div className="flex justify-center mb-8"><TLogo /></div>
           <h1 className="text-2xl font-bold text-foreground text-center mb-1">Reset Password</h1>
           <p className="text-sm text-muted-foreground text-center mb-8">We'll email you a link to set a new password</p>
           {resetSent ? (
@@ -120,7 +125,7 @@ export default function Login() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-6">
         <div className="w-full max-w-sm text-center">
-          <div className="flex justify-center mb-8"><TalliLogo height={44} /></div>
+          <div className="flex justify-center mb-8"><TLogo /></div>
           <div className="rounded-2xl bg-primary/10 border border-primary/20 p-8">
             <p className="text-lg font-bold text-primary mb-2">Check your email</p>
             <p className="text-sm text-muted-foreground">
@@ -139,7 +144,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6">
       <div className="w-full max-w-sm">
-        <div className="flex justify-center mb-8"><TalliLogo height={44} /></div>
+        <div className="flex justify-center mb-8"><TLogo /></div>
         <h1 className="text-2xl font-bold text-foreground text-center mb-1">Talli</h1>
         <p className="text-sm text-muted-foreground text-center mb-8">Per Diem Tracker</p>
 
