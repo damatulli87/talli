@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { Download, ChevronRight, Check, Trash2, LogOut } from "lucide-react";
+import { Download, ChevronRight, Check, Trash2, LogOut, KeyRound } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -13,6 +13,7 @@ import DeleteAccountSheet from "@/components/talli/DeleteAccountSheet";
 import PullToRefresh from "@/components/talli/PullToRefresh";
 import { SCHEDULE_PRESETS, getDayName, defaultConfig } from "@/lib/cycleUtils";
 import { useAuth } from "@/lib/AuthContext";
+import { supabase } from "@/lib/supabase";
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -46,6 +47,9 @@ export default function Settings() {
   const [travelDayEnabled, setTravelDayEnabled] = useState(false);
   const [saved, setSaved] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [settingPassword, setSettingPassword] = useState(false);
 
   useEffect(() => {
     if (existingConfig) {
@@ -130,6 +134,18 @@ export default function Settings() {
     a.click();
     URL.revokeObjectURL(url);
     toast.success("Exported!");
+  };
+
+  const handleSetPassword = async () => {
+    if (newPassword.length < 8) { toast.error("Password must be at least 8 characters"); return; }
+    if (newPassword !== confirmPassword) { toast.error("Passwords don't match"); return; }
+    setSettingPassword(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    setSettingPassword(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Password set! You can now sign in with email + password.");
+    setNewPassword("");
+    setConfirmPassword("");
   };
 
   const workDays = form.work_days || [];
@@ -322,6 +338,36 @@ export default function Settings() {
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
             </Button>
+          </div>
+
+          {/* Set Password */}
+          <div className="rounded-2xl bg-card border border-border p-5">
+            <h3 className="text-sm font-semibold text-foreground mb-1">Set Password</h3>
+            <p className="text-xs text-muted-foreground mb-4">Set a password so you can sign in from any device without a magic link</p>
+            <div className="space-y-3">
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="New password (min 8 chars)"
+                className="w-full h-12 px-4 bg-muted rounded-xl border-0 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+              />
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm password"
+                className="w-full h-12 px-4 bg-muted rounded-xl border-0 text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-primary/50 text-sm"
+              />
+              <Button
+                onClick={handleSetPassword}
+                disabled={settingPassword || !newPassword || !confirmPassword}
+                className="h-12 w-full rounded-xl font-semibold"
+              >
+                <KeyRound className="h-4 w-4 mr-2" />
+                {settingPassword ? "Saving…" : "Set Password"}
+              </Button>
+            </div>
           </div>
 
           {/* Delete Account — App Store required */}
