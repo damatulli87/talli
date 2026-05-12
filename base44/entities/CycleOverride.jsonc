@@ -1,0 +1,46 @@
+{
+  "name": "CycleOverride",
+  "type": "object",
+  "properties": {
+    "cycle_start_key": {
+      "type": "string",
+      "format": "date",
+      "description": "The cycle_start date this override applies to (yyyy-MM-dd)"
+    },
+    "day_overrides": {
+      "type": "array",
+      "description": "Per-day overrides within this cycle",
+      "items": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "full",
+              "half",
+              "travel",
+              "off",
+              "extra_full",
+              "extra_half",
+              "extra_travel"
+            ]
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "note": {
+      "type": "string",
+      "description": "Overall note about why this cycle was adjusted"
+    }
+  },
+  "required": [
+    "cycle_start_key"
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "name": "CycleConfig",
+  "type": "object",
+  "properties": {
+    "schedule_type": {
+      "type": "string",
+      "enum": [
+        "mon_fri",
+        "mon_sat",
+        "custom_days",
+        "rotating"
+      ],
+      "description": "Type of work schedule"
+    },
+    "work_days": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Days of week that are work days (0=Sun, 1=Mon ... 6=Sat)"
+    },
+    "travel_days": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "description": "Days of week that are travel days (partial per diem)"
+    },
+    "daily_rate": {
+      "type": "number",
+      "description": "Per diem allowance per full work day"
+    },
+    "travel_day_rate": {
+      "type": "number",
+      "description": "Per diem allowance on travel days (defaults to half of daily_rate)"
+    },
+    "travel_day_multiplier": {
+      "type": "number",
+      "description": "Fraction of daily rate for travel days (e.g. 0.5 = half)"
+    },
+    "cycle_type": {
+      "type": "string",
+      "enum": [
+        "weekly",
+        "biweekly",
+        "rotating"
+      ],
+      "description": "How allowance cycles are structured"
+    },
+    "weeks_on": {
+      "type": "number",
+      "description": "For rotating schedules: weeks working (deprecated \u2014 use days_on)"
+    },
+    "weeks_off": {
+      "type": "number",
+      "description": "For rotating schedules: weeks off (deprecated \u2014 use days_off)"
+    },
+    "days_on": {
+      "type": "number",
+      "description": "Exact number of days working per rotation (overrides weeks_on * 7)"
+    },
+    "days_off": {
+      "type": "number",
+      "description": "Exact number of days off per rotation (overrides weeks_off * 7)"
+    },
+    "cycle_start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The start date of the first cycle (to anchor all cycle calculations)"
+    },
+    "cycle_days": {
+      "type": "number",
+      "description": "Custom cycle length in days (overrides automatic calculation)"
+    },
+    "label": {
+      "type": "string",
+      "description": "User-friendly label for this config (e.g. '5-day field schedule')"
+    }
+  },
+  "required": [
+    "schedule_type",
+    "daily_rate",
+    "cycle_start_date"
+  ]
+}

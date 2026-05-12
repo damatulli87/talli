@@ -1,0 +1,71 @@
+{
+  "name": "Expense",
+  "type": "object",
+  "properties": {
+    "amount": {
+      "type": "number",
+      "description": "Expense amount in dollars"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "groceries",
+        "meals",
+        "lodging",
+        "fuel",
+        "misc",
+        "personal"
+      ],
+      "description": "Expense category"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the expense"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the expense"
+    },
+    "counts_toward_per_diem": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether this expense counts toward per diem allowance"
+    },
+    "week_start": {
+      "type": "string",
+      "format": "date",
+      "description": "Monday of the week this expense belongs to"
+    },
+    "receipt_url": {
+      "type": "string",
+      "description": "URL of the uploaded receipt photo"
+    },
+    "receipt_ocr_data": {
+      "type": "object",
+      "description": "Future: OCR-extracted data from receipt (merchant, date, total, suggested_category)",
+      "properties": {
+        "merchant": {
+          "type": "string"
+        },
+        "receipt_date": {
+          "type": "string"
+        },
+        "total": {
+          "type": "number"
+        },
+        "suggested_category": {
+          "type": "string"
+        },
+        "raw_text": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "amount",
+    "category",
+    "date"
+  ]
+}
