@@ -55,8 +55,15 @@ export default function Dashboard() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const configStart = parseISO(config.cycle_start_date);
-    // If config start is in future, use it; otherwise use today
-    setCycleAnchor(configStart > today ? configStart : today);
+    if (configStart > today) {
+      setCycleAnchor(configStart);
+    } else {
+      // Find which cycle today falls into by stepping forward from the configured start
+      const cycleLengthDays = config.cycle_days ?? (((config.weeks_on || 1) + (config.weeks_off || 0)) * 7);
+      const daysSinceStart = differenceInDays(today, configStart);
+      const completedCycles = Math.floor(daysSinceStart / cycleLengthDays);
+      setCycleAnchor(addDays(configStart, completedCycles * cycleLengthDays));
+    }
   }, [config?.cycle_start_date]);
 
   // Compute current cycle from anchor
