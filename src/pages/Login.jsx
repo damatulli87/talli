@@ -4,10 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 const TLogo = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="64" height="64">
-    <circle cx="50" cy="50" r="50" fill="#77C63E"/>
-    <text x="50" y="68" fontFamily="system-ui,sans-serif" fontSize="52" fontWeight="bold" fill="white" textAnchor="middle">T</text>
-  </svg>
+  <img src="/apple-touch-icon.png" alt="Talli" width="80" height="80" className="rounded-2xl" />
 )
 
 const GoogleButton = ({ onClick }) => (
