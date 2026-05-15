@@ -4,6 +4,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
 import { useTheme } from '@/lib/ThemeProvider'
+
+const TLogo = () => (
+  <img src="/apple-touch-icon.png" alt="Talli" width="80" height="80" className="rounded-2xl" />
+)
+
 const TalliWordmark = ({ dark }) => {
   const ink = dark ? "#ffffff" : "#121519"
   const inkAlt = dark ? "#ffffff" : "#111418"
